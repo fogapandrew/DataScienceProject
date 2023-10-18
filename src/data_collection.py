@@ -1,13 +1,16 @@
-import Utilities
+import utilities
 import os
 
-print("Current Working Directory:", os.getcwd())
+# Get the absolute path for data using the getfilepath from the utilities class.
+DATA_DIR = utilities.getfilepath()
 
-DATA_DIR = Utilities.getfilepath()
-
+# getting the path for the raw data file()
 filepath = os.path.join(DATA_DIR, 'rawdata', 'heart.csv')
 
-print(filepath)
-
-Rawdata = Utilities.importdata(filepath)
-
+try:
+    # Using importdata method from the utilities to import read in the file as a dataframe.
+    Rawdata = utilities.importdata(filepath)
+except FileNotFoundError:
+    print("File not found.")
+except Exception as e:
+    print(f"An error occurred: {e}")
