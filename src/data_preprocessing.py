@@ -15,11 +15,17 @@ class Preprocessing:
         selectedcol = 'cement'
         threshold = len(data[selectedcol])  # Set the threshold for missing values
         if  data.isnull().sum().sum() != 0:
-            # Check which columns have more than 20 missing values
-            columns_to_drop = data.columns[data.isnull().sum() >= threshold]
+            # Check which columns have more than half of the column length
+            columns_to_drop = data.columns[data.isnull().sum() > threshold]
             # Drop the identified columns
             data = data.drop(columns=columns_to_drop)
-            return  data
+            # filling missing values.
+            for col in data.columns[(data.isnull().sum() > 0) and (data.isnull().sum() < threshold)]:
+                # Calculate the mean of the column
+                mean_value = data[col].mean()
+                # Replace missing values with the mean
+                data[col].fillna(mean_value, inplace=True)
+                return  data
         else:
             return data
 
